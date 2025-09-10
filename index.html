@@ -1,31 +1,55 @@
-import { motion } from "framer-motion";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Junto Splash</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      background: #000; /* Black backdrop */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+    svg {
+      width: 65vmin;
+      height: 65vmin;
+      filter: drop-shadow(0 0 25px #00f0ff) drop-shadow(0 0 60px #8a2be2);
+    }
+    .logo-shape {
+      fill: url(#neonFill);
+    }
+  </style>
+</head>
+<body>
+  <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- Neon liquid gradient -->
+      <radialGradient id="neonFill" cx="50%" cy="50%" r="70%">
+        <stop offset="0%" stop-color="#00f0ff" />
+        <stop offset="100%" stop-color="#8a2be2" />
+      </radialGradient>
+    </defs>
 
-export default function IntroAnimation() {
-  return (
-    <div className="flex items-center justify-center h-screen bg-black">
-      <motion.svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 200 200" // adjust to your logo's viewBox
-        className="w-64 h-64"
-        initial={{ scale: 0.2, opacity: 0 }}
-        animate={{ scale: 1.5, opacity: 1 }}
-        transition={{ duration: 4, ease: "easeInOut" }}
-        style={{
-          stroke: "url(#neonGradient)",
-          strokeWidth: "4",
-          fill: "none",
-          filter: "drop-shadow(0 0 20px rgba(0,255,255,0.8)) drop-shadow(0 0 40px rgba(138,43,226,0.7))",
-        }}
-      >
-        {/* Outer stroke path of your logo goes here */}
-        <circle cx="100" cy="100" r="80" />
-        <defs>
-          <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-            <stop offset="0%" stopColor="#00ffff" /> {/* Neon Teal */}
-            <stop offset="100%" stopColor="#8a2be2" /> {/* Neon Violet */}
-          </linearGradient>
-        </defs>
-      </motion.svg>
-    </div>
-  );
-}
+    <!-- Glowing neon orb -->
+    <circle class="logo-shape" cx="250" cy="250" r="200" />
+  </svg>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script>
+    const orb = document.querySelector("svg");
+
+    gsap.to(orb, {
+      scale: 1.1,
+      rotate: 5,
+      duration: 7,
+      repeat: -1,
+      yoyo: true,
+      ease: "sine.inOut"
+    });
+  </script>
+</body>
+</html>
