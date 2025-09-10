@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    body, html {
+      margin: 0; padding: 0; height: 100%; width: 100%;
+      background: #0d0d0d; /* dark background */
+      overflow: hidden;
+    }
+    canvas { display: block; }
+  </style>
+</head>
+<body>
+<canvas id="oil"></canvas>
+<script>
+  const c = document.getElementById("oil");
+  const ctx = c.getContext("2d");
+  c.width = window.innerWidth;
+  c.height = window.innerHeight;
+
+  function draw(t) {
+    ctx.clearRect(0, 0, c.width, c.height);
+    for (let i = 0; i < 8; i++) {
+      ctx.beginPath();
+      const x = c.width/2 + Math.sin(t/1000 + i) * 200;
+      const y = c.height/2 + Math.cos(t/1000 + i) * 200;
+      ctx.fillStyle = `hsla(${(t/20+i*40)%360}, 80%, 50%, 0.5)`;
+      ctx.arc(x, y, 200, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  requestAnimationFrame(draw);
+</script>
+</body>
+</html>
