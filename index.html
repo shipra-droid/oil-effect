@@ -1,55 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Junto Splash</title>
+  <meta charset="UTF-8">
+  <title>Junto Neon Morph Animation</title>
   <style>
     body {
+      background: #101624;
       margin: 0;
+      overflow: hidden;
       height: 100vh;
-      background: #000; /* Black backdrop */
       display: flex;
       justify-content: center;
       align-items: center;
-      overflow: hidden;
     }
-    svg {
-      width: 65vmin;
-      height: 65vmin;
-      filter: drop-shadow(0 0 25px #00f0ff) drop-shadow(0 0 60px #8a2be2);
+    .logo-container {
+      position: relative;
+      width: 380px;
+      height: 380px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      animation: expand 4s cubic-bezier(0.57, 0.13, 0.29, 0.86) forwards;
     }
-    .logo-shape {
-      fill: url(#neonFill);
+    @keyframes expand {
+      0%   { transform: scale(0.7); }
+      80%  { transform: scale(1.18); }
+      100% { transform: scale(1); }
+    }
+    .liquid-logo {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 0 30px #00ffe5) drop-shadow(0 0 50px #a400ff);
+      animation: rotate 8s linear infinite;
+      will-change: transform, filter;
+      transition: filter 0.5s;
+    }
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    /* Morph effect - SVG filter */
+    .liquid-logo svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      filter: url(#gooey);
     }
   </style>
 </head>
 <body>
-  <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <!-- Neon liquid gradient -->
-      <radialGradient id="neonFill" cx="50%" cy="50%" r="70%">
-        <stop offset="0%" stop-color="#00f0ff" />
-        <stop offset="100%" stop-color="#8a2be2" />
-      </radialGradient>
-    </defs>
-
-    <!-- Glowing neon orb -->
-    <circle class="logo-shape" cx="250" cy="250" r="200" />
-  </svg>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <div class="logo-container">
+    <div class="liquid-logo">
+      <!-- Replace SVG below with your Junto logo SVG paths, colored neon style -->
+      <svg viewBox="0 0 512 512">
+        <defs>
+          <filter id="gooey">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="7" result="blur" />
+            <feColorMatrix in="blur" mode="matrix"
+              values="1 0 0 0 0
+                      0 1 0 0 0
+                      0 0 1 0 0
+                      0 0 0 19 -9" result="gooey" />
+            <feBlend in="SourceGraphic" in2="gooey" />
+          </filter>
+          <radialGradient id="neonGradient" cx="50%" cy="50%" r="65%">
+            <stop offset="10%" stop-color="#00ffe5"/>
+            <stop offset="75%" stop-color="#a400ff"/>
+            <stop offset="100%" stop-color="#222644"/>
+          </radialGradient>
+        </defs>
+        <!-- Example: Replace the path below with your actual Junto logo paths -->
+        <circle cx="256" cy="256" r="200" stroke="url(#neonGradient)" stroke-width="23" fill="none"/>
+        <circle cx="256" cy="256" r="102" stroke="url(#neonGradient)" stroke-width="18" fill="none"/>
+        <circle cx="375" cy="141" r="32" fill="#a400ff"/>
+        <circle cx="136" cy="194" r="22" fill="#00ffe5"/>
+        <!-- Add more elements or morphing animation below if needed -->
+      </svg>
+    </div>
+  </div>
   <script>
-    const orb = document.querySelector("svg");
-
-    gsap.to(orb, {
-      scale: 1.1,
-      rotate: 5,
-      duration: 7,
-      repeat: -1,
-      yoyo: true,
-      ease: "sine.inOut"
-    });
+    // Optional: Morphing effect using JS for SVG path jitter
+    // Animate the circles to gently morph like oil spill
+    function morphLogo() {
+      const svg = document.querySelector('.liquid-logo svg');
+      const circles = svg.querySelectorAll('circle');
+      setInterval(() => {
+        circles.forEach((c, i) => {
+          const baseR = c.getAttribute('r');
+          if (baseR) {
+            const newR = parseFloat(baseR) + Math.sin(Date.now()/750 + i) * 6;
+            c.setAttribute('r', newR);
+          }
+        });
+      }, 45);
+    }
+    morphLogo();
   </script>
 </body>
 </html>
