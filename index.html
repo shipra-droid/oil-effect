@@ -1,80 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Junto Oil Orb</title>
-  <style>
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      background: #000;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    canvas {
-      display: block;
-    }
-  </style>
-</head>
-<body>
-  <canvas id="orb"></canvas>
-  <script>
-    const canvas = document.getElementById("orb");
-    const ctx = canvas.getContext("2d");
-    let w, h;
-    function resize() {
-      w = canvas.width = window.innerWidth;
-      h = canvas.height = window.innerHeight;
-    }
-    window.addEventListener("resize", resize);
-    resize();
+import { motion } from "framer-motion";
 
-    let t = 0;
-    function draw() {
-      ctx.clearRect(0, 0, w, h);
-
-      const cx = w / 2;
-      const cy = h / 2;
-      const radius = Math.min(w, h) / 3;
-
-      // Clip into a circular shape
-      ctx.save();
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.clip();
-
-      // Create flowing gradient effect
-      for (let i = 0; i < 30; i++) {
-        const angle = (t / 50 + i) * 0.3;
-        const x = cx + Math.sin(angle) * radius * 0.8;
-        const y = cy + Math.cos(angle * 1.2) * radius * 0.8;
-
-        const grad = ctx.createRadialGradient(x, y, 10, x, y, radius);
-        grad.addColorStop(0, `hsla(${200 + (i * 12) % 100}, 100%, 50%, 0.3)`);
-        grad.addColorStop(1, "transparent");
-
-        ctx.fillStyle = grad;
-        ctx.fillRect(cx - radius, cy - radius, radius * 2, radius * 2);
-      }
-
-      ctx.restore();
-
-      // Outer glow ring
-      ctx.beginPath();
-      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
-      ctx.strokeStyle = "rgba(120, 0, 255, 0.6)";
-      ctx.lineWidth = 6;
-      ctx.shadowBlur = 30;
-      ctx.shadowColor = "cyan";
-      ctx.stroke();
-
-      t += 1;
-      requestAnimationFrame(draw);
-    }
-    draw();
-  </script>
-</body>
-</html>
+export default function IntroAnimation() {
+  return (
+    <div className="flex items-center justify-center h-screen bg-black">
+      <motion.svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 200 200" // adjust to your logo's viewBox
+        className="w-64 h-64"
+        initial={{ scale: 0.2, opacity: 0 }}
+        animate={{ scale: 1.5, opacity: 1 }}
+        transition={{ duration: 4, ease: "easeInOut" }}
+        style={{
+          stroke: "url(#neonGradient)",
+          strokeWidth: "4",
+          fill: "none",
+          filter: "drop-shadow(0 0 20px rgba(0,255,255,0.8)) drop-shadow(0 0 40px rgba(138,43,226,0.7))",
+        }}
+      >
+        {/* Outer stroke path of your logo goes here */}
+        <circle cx="100" cy="100" r="80" />
+        <defs>
+          <linearGradient id="neonGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#00ffff" /> {/* Neon Teal */}
+            <stop offset="100%" stopColor="#8a2be2" /> {/* Neon Violet */}
+          </linearGradient>
+        </defs>
+      </motion.svg>
+    </div>
+  );
+}
